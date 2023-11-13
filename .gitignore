@@ -1,0 +1,15 @@
+*.so
+CMakeFiles/
+*.json
+*.cmake
+**/build
+**/CMakeFiles
+MakeFile
+*.lock
+*.db
+*.make
+CMakeCache.txt
+sensor
+server
+**/target
+**/.cache
