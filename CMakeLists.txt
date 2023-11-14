@@ -16,11 +16,12 @@ add_subdirectory(lib)
 
 add_library(users SHARED connmgr.c datamgr.c sensor_db.c)
 target_compile_options(users PRIVATE ${COMMON_FLAGS})
-target_link_libraries(users vector tcpsock "-lsqlite3")
 add_dependencies(users vector)
 
 add_library(sbuffer SHARED sbuffer.c)
 target_compile_options(sbuffer PRIVATE ${COMMON_FLAGS})
+get_target_property(RUST_CODE_DIR vector LOCATION)
+target_link_libraries(users ${RUST_CODE_DIR}/libvector.so tcpsock "-lsqlite3")
 
 add_executable(server main.c)
 target_compile_options(server PRIVATE ${COMMON_FLAGS})
