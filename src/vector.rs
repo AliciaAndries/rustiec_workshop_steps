@@ -33,34 +33,7 @@ pub unsafe extern "C" fn vector_set_size(
     mut vec: *mut vector_t,
     mut number: libc::c_int,
 ) {
-    if !vec.is_null() {} else {
-        __assert_fail(
-            b"vec\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            14 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 38],
-                &[libc::c_char; 38],
-            >(b"void vector_set_size(vector_t *, int)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_915: {
-        if !vec.is_null() {} else {
-            __assert_fail(
-                b"vec\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                14 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 38],
-                    &[libc::c_char; 38],
-                >(b"void vector_set_size(vector_t *, int)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
+    assert!(!vec.is_null());
     (*vec).size = number as size_t;
     (*vec)
         .elements = realloc(
@@ -91,34 +64,7 @@ pub unsafe extern "C" fn vector_add(
     mut vec: *mut vector_t,
     mut element: *mut libc::c_void,
 ) {
-    if !vec.is_null() {} else {
-        __assert_fail(
-            b"vec\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            28 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 36],
-                &[libc::c_char; 36],
-            >(b"void vector_add(vector_t *, void *)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1014: {
-        if !vec.is_null() {} else {
-            __assert_fail(
-                b"vec\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                28 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 36],
-                    &[libc::c_char; 36],
-                >(b"void vector_add(vector_t *, void *)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
+    assert!(!vec.is_null());
     (*vec).size = ((*vec).size).wrapping_add(1);
     (*vec).size;
     (*vec)
@@ -136,62 +82,8 @@ pub unsafe extern "C" fn vector_remove_at_index(
     mut vec: *mut vector_t,
     mut index: size_t,
 ) {
-    if !vec.is_null() {} else {
-        __assert_fail(
-            b"vec\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            35 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 48],
-                &[libc::c_char; 48],
-            >(b"void vector_remove_at_index(vector_t *, size_t)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1179: {
-        if !vec.is_null() {} else {
-            __assert_fail(
-                b"vec\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                35 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 48],
-                    &[libc::c_char; 48],
-                >(b"void vector_remove_at_index(vector_t *, size_t)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
-    if index < (*vec).size {} else {
-        __assert_fail(
-            b"index < vec->size\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            36 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 48],
-                &[libc::c_char; 48],
-            >(b"void vector_remove_at_index(vector_t *, size_t)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1135: {
-        if index < (*vec).size {} else {
-            __assert_fail(
-                b"index < vec->size\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                36 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 48],
-                    &[libc::c_char; 48],
-                >(b"void vector_remove_at_index(vector_t *, size_t)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
+    assert!(!vec.is_null());
+    assert!(index < (*vec).size);
     if index < ((*vec).size).wrapping_sub(1 as libc::c_int as libc::c_ulong) {
         memmove(
             ((*vec).elements).offset(index as isize) as *mut libc::c_void,
@@ -216,62 +108,8 @@ pub unsafe extern "C" fn vector_at(
     mut vec: *mut vector_t,
     mut index: size_t,
 ) -> *mut libc::c_void {
-    if !vec.is_null() {} else {
-        __assert_fail(
-            b"vec\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            44 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 36],
-                &[libc::c_char; 36],
-            >(b"void *vector_at(vector_t *, size_t)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1269: {
-        if !vec.is_null() {} else {
-            __assert_fail(
-                b"vec\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                44 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 36],
-                    &[libc::c_char; 36],
-                >(b"void *vector_at(vector_t *, size_t)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
-    if index < (*vec).size {} else {
-        __assert_fail(
-            b"index < vec->size\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            45 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 36],
-                &[libc::c_char; 36],
-            >(b"void *vector_at(vector_t *, size_t)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1227: {
-        if index < (*vec).size {} else {
-            __assert_fail(
-                b"index < vec->size\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                45 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 36],
-                    &[libc::c_char; 36],
-                >(b"void *vector_at(vector_t *, size_t)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
+    assert!(!vec.is_null());
+    assert!(index < (*vec).size);
     return *((*vec).elements).offset(index as isize);
 }
 #[no_mangle]
@@ -280,62 +118,8 @@ pub unsafe extern "C" fn vector_set(
     mut index: size_t,
     mut new_value: *mut libc::c_void,
 ) {
-    if !vec.is_null() {} else {
-        __assert_fail(
-            b"vec\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            50 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"void vector_set(vector_t *, size_t, void *)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1363: {
-        if !vec.is_null() {} else {
-            __assert_fail(
-                b"vec\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                50 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 44],
-                    &[libc::c_char; 44],
-                >(b"void vector_set(vector_t *, size_t, void *)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
-    if index < (*vec).size {} else {
-        __assert_fail(
-            b"index < vec->size\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            51 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 44],
-                &[libc::c_char; 44],
-            >(b"void vector_set(vector_t *, size_t, void *)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1320: {
-        if index < (*vec).size {} else {
-            __assert_fail(
-                b"index < vec->size\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                51 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 44],
-                    &[libc::c_char; 44],
-                >(b"void vector_set(vector_t *, size_t, void *)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
+    assert!(!vec.is_null());
+    assert!(index < (*vec).size);
     let ref mut fresh2 = *((*vec).elements).offset(index as isize);
     *fresh2 = new_value;
 }
@@ -347,34 +131,7 @@ pub unsafe extern "C" fn vector_find(
         unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> bool,
     >,
 ) -> *mut libc::c_void {
-    if !vec.is_null() {} else {
-        __assert_fail(
-            b"vec\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            56 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 65],
-                &[libc::c_char; 65],
-            >(b"void *vector_find(vector_t *, void *, _Bool (*)(void *, void *))\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1446: {
-        if !vec.is_null() {} else {
-            __assert_fail(
-                b"vec\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                56 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 65],
-                    &[libc::c_char; 65],
-                >(b"void *vector_find(vector_t *, void *, _Bool (*)(void *, void *))\0"))
-                    .as_ptr(),
-            );
-        }
-    };
+    assert!(!vec.is_null());
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < (*vec).size {
         let mut element: *mut libc::c_void = vector_at(vec, i);
@@ -389,66 +146,12 @@ pub unsafe extern "C" fn vector_find(
 }
 #[no_mangle]
 pub unsafe extern "C" fn vector_size(mut vec: *mut vector_t) -> size_t {
-    if !vec.is_null() {} else {
-        __assert_fail(
-            b"vec\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            66 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 31],
-                &[libc::c_char; 31],
-            >(b"size_t vector_size(vector_t *)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1489: {
-        if !vec.is_null() {} else {
-            __assert_fail(
-                b"vec\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                66 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 31],
-                    &[libc::c_char; 31],
-                >(b"size_t vector_size(vector_t *)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
+    assert!(!vec.is_null());
     return (*vec).size;
 }
 #[no_mangle]
 pub unsafe extern "C" fn vector_destroy(mut vec: *mut vector_t) {
-    if !vec.is_null() {} else {
-        __assert_fail(
-            b"vec\0" as *const u8 as *const libc::c_char,
-            b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                as *const libc::c_char,
-            71 as libc::c_int as libc::c_uint,
-            (*::core::mem::transmute::<
-                &[u8; 32],
-                &[libc::c_char; 32],
-            >(b"void vector_destroy(vector_t *)\0"))
-                .as_ptr(),
-        );
-    }
-    'c_1547: {
-        if !vec.is_null() {} else {
-            __assert_fail(
-                b"vec\0" as *const u8 as *const libc::c_char,
-                b"/home/alicia/workshop_start_point/lib/vector.c\0" as *const u8
-                    as *const libc::c_char,
-                71 as libc::c_int as libc::c_uint,
-                (*::core::mem::transmute::<
-                    &[u8; 32],
-                    &[libc::c_char; 32],
-                >(b"void vector_destroy(vector_t *)\0"))
-                    .as_ptr(),
-            );
-        }
-    };
+    assert!(!vec.is_null());
     free((*vec).elements as *mut libc::c_void);
     free(vec as *mut libc::c_void);
 }
