@@ -1,4 +1,4 @@
-#![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
+#![allow(non_camel_case_types)]
 pub type size_t = usize;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -9,8 +9,8 @@ pub struct vector {
 pub type vector_t = vector;
 #[no_mangle]
 pub unsafe extern "C" fn vector_set_size(
-    mut vec: *mut vector_t,
-    mut number: libc::c_int,
+    vec: *mut vector_t,
+    number: libc::c_int,
 ) {
     assert!(!vec.is_null());
     (*vec).size = number as size_t;
@@ -28,8 +28,8 @@ pub unsafe extern "C" fn vector_set_size(
     );
 }
 #[no_mangle]
-pub unsafe extern "C" fn vector_create(mut size: size_t) -> *mut vector_t {
-    let mut vector: *mut vector_t = libc::calloc(
+pub unsafe extern "C" fn vector_create(size: size_t) -> *mut vector_t {
+    let vector: *mut vector_t = libc::calloc(
         1,
         ::core::mem::size_of::<vector_t>(),
     ) as *mut vector_t;
@@ -40,8 +40,8 @@ pub unsafe extern "C" fn vector_create(mut size: size_t) -> *mut vector_t {
 }
 #[no_mangle]
 pub unsafe extern "C" fn vector_add(
-    mut vec: *mut vector_t,
-    mut element: *mut libc::c_void,
+    vec: *mut vector_t,
+    element: *mut libc::c_void,
 ) {
     assert!(!vec.is_null());
 
@@ -58,8 +58,8 @@ pub unsafe extern "C" fn vector_add(
 }
 #[no_mangle]
 pub unsafe extern "C" fn vector_remove_at_index(
-    mut vec: *mut vector_t,
-    mut index: size_t,
+    vec: *mut vector_t,
+    index: size_t,
 ) {
     assert!(!vec.is_null());
     assert!(index < (*vec).size);
@@ -82,8 +82,8 @@ pub unsafe extern "C" fn vector_remove_at_index(
 }
 #[no_mangle]
 pub unsafe extern "C" fn vector_at(
-    mut vec: *mut vector_t,
-    mut index: size_t,
+    vec: *mut vector_t,
+    index: size_t,
 ) -> *mut libc::c_void {
     assert!(!vec.is_null());
     assert!(index < (*vec).size);
@@ -91,9 +91,9 @@ pub unsafe extern "C" fn vector_at(
 }
 #[no_mangle]
 pub unsafe extern "C" fn vector_set(
-    mut vec: *mut vector_t,
-    mut index: size_t,
-    mut new_value: *mut libc::c_void,
+    vec: *mut vector_t,
+    index: size_t,
+    new_value: *mut libc::c_void,
 ) {
     assert!(!vec.is_null());
     assert!(index < (*vec).size);
@@ -102,32 +102,31 @@ pub unsafe extern "C" fn vector_set(
 }
 #[no_mangle]
 pub unsafe extern "C" fn vector_find(
-    mut vec: *mut vector_t,
-    mut element_to_match: *mut libc::c_void,
-    mut match_elements: Option::<
+    vec: *mut vector_t,
+    element_to_match: *mut libc::c_void,
+    match_elements: Option::<
         unsafe extern "C" fn(*mut libc::c_void, *mut libc::c_void) -> bool,
     >,
 ) -> *mut libc::c_void {
     assert!(!vec.is_null());
     let mut i: size_t = 0 as libc::c_int as size_t;
     while i < (*vec).size {
-        let mut element: *mut libc::c_void = vector_at(vec, i);
+        let element: *mut libc::c_void = vector_at(vec, i);
         if match_elements.expect("non-null function pointer")(element, element_to_match)
         {
             return element;
         }
         i = i + 1;
-        i;
     }
     return 0 as *mut libc::c_void;
 }
 #[no_mangle]
-pub unsafe extern "C" fn vector_size(mut vec: *mut vector_t) -> size_t {
+pub unsafe extern "C" fn vector_size(vec: *mut vector_t) -> size_t {
     assert!(!vec.is_null());
     return (*vec).size;
 }
 #[no_mangle]
-pub unsafe extern "C" fn vector_destroy(mut vec: *mut vector_t) {
+pub unsafe extern "C" fn vector_destroy(vec: *mut vector_t) {
     assert!(!vec.is_null());
     libc::free((*vec).elements as *mut libc::c_void);
     libc::free(vec as *mut libc::c_void);
