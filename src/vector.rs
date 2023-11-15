@@ -1,26 +1,5 @@
 #![allow(dead_code, mutable_transmutes, non_camel_case_types, non_snake_case, non_upper_case_globals, unused_assignments, unused_mut)]
-extern "C" {
-    fn __assert_fail(
-        __assertion: *const libc::c_char,
-        __file: *const libc::c_char,
-        __line: libc::c_uint,
-        __function: *const libc::c_char,
-    ) -> !;
-    fn realloc(_: *mut libc::c_void, _: libc::c_ulong) -> *mut libc::c_void;
-    fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
-    fn free(_: *mut libc::c_void);
-    fn memmove(
-        _: *mut libc::c_void,
-        _: *const libc::c_void,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-    fn memset(
-        _: *mut libc::c_void,
-        _: libc::c_int,
-        _: libc::c_ulong,
-    ) -> *mut libc::c_void;
-}
-pub type size_t = libc::c_ulong;
+pub type size_t = usize;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct vector {
@@ -36,23 +15,23 @@ pub unsafe extern "C" fn vector_set_size(
     assert!(!vec.is_null());
     (*vec).size = number as size_t;
     (*vec)
-        .elements = realloc(
+        .elements = libc::realloc(
         (*vec).elements as *mut libc::c_void,
         (*vec).size
-            * ::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong
+            * ::core::mem::size_of::<*mut libc::c_void>()
     ) as *mut *mut libc::c_void;
-    memset(
+    libc::memset(
         (*vec).elements as *mut libc::c_void,
         0 as libc::c_int,
         (*vec).size
-            * ::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong
+            * ::core::mem::size_of::<*mut libc::c_void>()
     );
 }
 #[no_mangle]
 pub unsafe extern "C" fn vector_create(mut size: size_t) -> *mut vector_t {
-    let mut vector: *mut vector_t = calloc(
-        1 as libc::c_int as libc::c_ulong,
-        ::core::mem::size_of::<vector_t>() as libc::c_ulong,
+    let mut vector: *mut vector_t = libc::calloc(
+        1,
+        ::core::mem::size_of::<vector_t>(),
     ) as *mut vector_t;
     if size != 0 {
         vector_set_size(vector, size as libc::c_int);
@@ -69,12 +48,12 @@ pub unsafe extern "C" fn vector_add(
     (*vec).size = (*vec).size + 1;
     (*vec).size;
     (*vec)
-        .elements = realloc(
+        .elements = libc::realloc(
         (*vec).elements as *mut libc::c_void,
         (*vec).size
-            * ::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong)as *mut *mut libc::c_void;
+            * ::core::mem::size_of::<*mut libc::c_void>())as *mut *mut libc::c_void;
     let ref mut fresh0 = *((*vec).elements)
-        .offset(((*vec).size - 1 as libc::c_int as libc::c_ulong) as isize);
+        .offset(((*vec).size - 1) as isize);
     *fresh0 = element;
 }
 #[no_mangle]
@@ -84,19 +63,19 @@ pub unsafe extern "C" fn vector_remove_at_index(
 ) {
     assert!(!vec.is_null());
     assert!(index < (*vec).size);
-    if index < (*vec).size - 1 as libc::c_int as libc::c_ulong {
-        memmove(
+    if index < (*vec).size - 1 {
+        libc::memmove(
             ((*vec).elements).offset(index as isize) as *mut libc::c_void,
             ((*vec).elements).offset(index as isize).offset(1 as libc::c_int as isize)
                 as *const libc::c_void,
             ((*vec).size
                 - index
-                - 1 as libc::c_int as libc::c_ulong)
-                * ::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong,
+                - 1)
+                * ::core::mem::size_of::<*mut libc::c_void>(),
         );
     }
     let ref mut fresh1 = *((*vec).elements)
-        .offset(((*vec).size - 1 as libc::c_int as libc::c_ulong) as isize);
+        .offset(((*vec).size - 1) as isize);
     *fresh1 = 0 as *mut libc::c_void;
     (*vec).size = (*vec).size - 1;
     (*vec).size;
@@ -150,6 +129,6 @@ pub unsafe extern "C" fn vector_size(mut vec: *mut vector_t) -> size_t {
 #[no_mangle]
 pub unsafe extern "C" fn vector_destroy(mut vec: *mut vector_t) {
     assert!(!vec.is_null());
-    free((*vec).elements as *mut libc::c_void);
-    free(vec as *mut libc::c_void);
+    libc::free((*vec).elements as *mut libc::c_void);
+    libc::free(vec as *mut libc::c_void);
 }
