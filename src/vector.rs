@@ -38,14 +38,14 @@ pub unsafe extern "C" fn vector_set_size(
     (*vec)
         .elements = realloc(
         (*vec).elements as *mut libc::c_void,
-        ((*vec).size)
-            .wrapping_mul(::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong),
+        (*vec).size
+            * ::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong
     ) as *mut *mut libc::c_void;
     memset(
         (*vec).elements as *mut libc::c_void,
         0 as libc::c_int,
-        ((*vec).size)
-            .wrapping_mul(::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong),
+        (*vec).size
+            * ::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong
     );
 }
 #[no_mangle]
@@ -65,16 +65,16 @@ pub unsafe extern "C" fn vector_add(
     mut element: *mut libc::c_void,
 ) {
     assert!(!vec.is_null());
-    (*vec).size = ((*vec).size).wrapping_add(1);
+
+    (*vec).size = (*vec).size + 1;
     (*vec).size;
     (*vec)
         .elements = realloc(
         (*vec).elements as *mut libc::c_void,
-        ((*vec).size)
-            .wrapping_mul(::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong),
-    ) as *mut *mut libc::c_void;
+        (*vec).size
+            * ::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong)as *mut *mut libc::c_void;
     let ref mut fresh0 = *((*vec).elements)
-        .offset(((*vec).size).wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize);
+        .offset(((*vec).size - 1 as libc::c_int as libc::c_ulong) as isize);
     *fresh0 = element;
 }
 #[no_mangle]
@@ -84,23 +84,21 @@ pub unsafe extern "C" fn vector_remove_at_index(
 ) {
     assert!(!vec.is_null());
     assert!(index < (*vec).size);
-    if index < ((*vec).size).wrapping_sub(1 as libc::c_int as libc::c_ulong) {
+    if index < (*vec).size - 1 as libc::c_int as libc::c_ulong {
         memmove(
             ((*vec).elements).offset(index as isize) as *mut libc::c_void,
             ((*vec).elements).offset(index as isize).offset(1 as libc::c_int as isize)
                 as *const libc::c_void,
-            ((*vec).size)
-                .wrapping_sub(index)
-                .wrapping_sub(1 as libc::c_int as libc::c_ulong)
-                .wrapping_mul(
-                    ::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong,
-                ),
+            ((*vec).size
+                - index
+                - 1 as libc::c_int as libc::c_ulong)
+                * ::core::mem::size_of::<*mut libc::c_void>() as libc::c_ulong,
         );
     }
     let ref mut fresh1 = *((*vec).elements)
-        .offset(((*vec).size).wrapping_sub(1 as libc::c_int as libc::c_ulong) as isize);
+        .offset(((*vec).size - 1 as libc::c_int as libc::c_ulong) as isize);
     *fresh1 = 0 as *mut libc::c_void;
-    (*vec).size = ((*vec).size).wrapping_sub(1);
+    (*vec).size = (*vec).size - 1;
     (*vec).size;
 }
 #[no_mangle]
@@ -139,7 +137,7 @@ pub unsafe extern "C" fn vector_find(
         {
             return element;
         }
-        i = i.wrapping_add(1);
+        i = i + 1;
         i;
     }
     return 0 as *mut libc::c_void;
