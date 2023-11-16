@@ -8,3 +8,6 @@ crate-type = ["dylib"]
 
 [dependencies]
 libc = "0.2.149"
+
+[build-dependencies]
+cbindgen = "0.26.0"
